@@ -1,0 +1,31 @@
+<html>
+  <script src="./node_modules/zone.js/dist/zone-evergreen.js"></script>
+  <script>
+    const promise = Promise.resolve(1);
+    function doSomethingWithoutZoneTask() {
+      window[Zone.__symbol__('requestAnimationFrame')](() => {
+        console.log('handler begin');
+        promise.then(() => {
+          console.log('promise then called');
+        });
+        div.removeChild(btn);
+        console.log('handler end');
+      });
+    }
+    window.onload = function() {
+      const btn = document.getElementById('btn');
+      const div = document.getElementById('div');
+      btn.addEventListener('blur', () => {
+        console.log('blur');
+      });
+      btn.addEventListener('click', () => {
+        doSomethingOutsideOfZone();
+      });
+    }
+  </script>
+  <body>
+    <div id="div">
+      <button id="btn">Test</button>
+    </div>
+  </body>
+</html>
